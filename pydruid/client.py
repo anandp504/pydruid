@@ -37,6 +37,7 @@ class BaseDruidClient(object):
         self.username = None
         self.password = None
         self.proxies = None
+        self.http_headers = None
 
     def set_basic_auth_credentials(self, username, password):
         self.username = username
@@ -60,7 +61,13 @@ class BaseDruidClient(object):
             b64string = b64encode(authstring.encode()).decode()
             headers["Authorization"] = "Basic {}".format(b64string)
 
+        if (self.http_headers is not None):
+            headers = self.http_headers
+
         return headers, querystr, url
+
+    def set_http_headers(self, http_headers):
+        self.http_headers = http_headers
 
     def _post(self, query):
         """
