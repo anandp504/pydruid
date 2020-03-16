@@ -55,7 +55,8 @@ class BaseDruidClient(object):
             url = self.url + self.endpoint
         else:
             url = self.url + "/" + self.endpoint
-        headers = {"Content-Type": "application/json"}
+
+        # headers = {"Content-Type": "application/json"}
         if (self.username is not None) and (self.password is not None):
             authstring = "{}:{}".format(self.username, self.password)
             b64string = b64encode(authstring.encode()).decode()
@@ -64,10 +65,12 @@ class BaseDruidClient(object):
         if (self.http_headers is not None):
             headers = self.http_headers
 
+        headers["Content-Type"] = "application/json"
+
         return headers, querystr, url
 
-    def set_http_headers(self, http_headers):
-        self.http_headers = http_headers
+    def set_http_headers(self, headers):
+        self.http_headers = headers
 
     def _post(self, query):
         """
